@@ -1,0 +1,37 @@
+Spring Boot e Teste: Profiles, Testes e Deploy
+
+
+
+Cenário:
+
+Todas as respostas dadas pelos alunos e alunas do programa Orange Talent podem ser acessadas por mentores e programa managers que acompanham as turmas. Mas, como esse endereço reside no mesmo sistema onde os próprios alunos e alunas respondem às avaliações, é necessário controlarmos o acesso. Tanto aluno, como mentor, como program manager fazem login no mesmo sistema mas, por conta do nível de acesso, tem acessos a endereços diferentes.
+
+
+Além disso, agora, para cada resposta dada por um aluno ou aluna, o sistema deve enviar um email para os(as) program managers avisando do evento. Só que tem um detalhe, em ambiente de desenvolvimento esse envio deve ser apenas de brincadeira, um mero print exibindo o email que deveria ser enviado. Só que em produção, o email deveria ser enviado usando o provedor de envio de emails que a Zup utiliza.
+
+
+Descreva quais seriam os passos para você, usando o Spring Security, proteger os acessos em função do nível de acesso(roles) de cada tipo de usuário logado no sistema.
+Descreva quais seriam os passos para você implementar o suporte a envios de emails de maneiras diferentes em função do ambiente de execução.
+
+
+
+O que seria bom ver nessa resposta?
+
+
+
+Peso 2: Definição de role para cada tipo de usuário que teria acesso ao sistema.
+Peso 2: Associação das roles para os endereços, de forma a controlar o acesso.
+Peso 6: Descrição detalhada do uso dos profiles para definir qual bean seria carregado em função do ambiente.
+Peso 3: Utilização da annotation Profile para ter beans carregados diferentes ou uso do próprio Environment para a tomada de decisão.
+Peso 3: Passagem do argumento indicando o profile desejado para load da aplicação
+
+
+Resposta do Especialista:
+
+Definição de Roles: Para cada novo usuário do sistema já seria associada uma Role diferente. Exemplo: Aluno, Mentor, Program Manager. Essa Role é uma implementação da interface GrantedAuthority.
+Definição de Roles: Para cada endereço mapeado para ser protegido, vai ter também agora a associação das roles que tem acesso. No endereço de análise das respostas, as roles que terão acesso são as de Mentor e Program Manager.
+Sobre os profiles: Criaria uma classe anotada com @Configuration com um método marcado com @Bean que receberia como argumento um Environment. A partir desse argumento o código faria um if para decidir qual implementação de email seria criada. Uma outra opção seria criar dois métodos diferentes anotados com @Profile referenciando os ambientes definidos pelo projeto.
+Sobre os profiles: Eu deixaria o profile default no arquivo application.properties e passaria como argumento de produção o profile correto a ser utilizado em tal ambiente. Outra opção seria sempre passar o argumento de definição por linha de comando, mesmo em ambiente de dev. As ides suportam isso.
+
+
+
